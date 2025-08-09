@@ -6,9 +6,10 @@ interface ArtistState {
   artist: Artist | null;
   loading: boolean;
   error: string | null;
-  setArtist: (artist: Artist) => void;
+  setArtist: (artist: Artist | null) => void; // aceita null
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  clearArtist: () => void; // adiciona clearArtist
 }
 
 export const useArtistStore = create<ArtistState>((set) => ({
@@ -18,4 +19,5 @@ export const useArtistStore = create<ArtistState>((set) => ({
   setArtist: (artist) => set({ artist, error: null }),
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error, loading: false, artist: null }),
+  clearArtist: () => set({ artist: null, error: null }), // implementação
 }));

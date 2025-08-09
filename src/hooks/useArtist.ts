@@ -11,12 +11,12 @@ export function useArtist(slug: string) {
 
     async function fetchArtist() {
       try {
-        const res = await fetch(`/users/public/samoth-tec`);
+        const res = await fetch(`/users/public/${slug}`);
         if (!res.ok) throw new Error('Artista não encontrado');
         const data = await res.json();
         setArtist(data);
       } catch {
-        setArtist(null);
+        setArtist(null); // agora permitido
       }
     }
 
