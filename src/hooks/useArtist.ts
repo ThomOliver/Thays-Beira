@@ -16,7 +16,7 @@ export function useArtist(slug: string) {
         const data = await res.json();
         setArtist(data);
       } catch {
-        setArtist(null); // agora permitido
+        setArtist(null);
       }
     }
 

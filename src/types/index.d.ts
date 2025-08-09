@@ -36,3 +36,7 @@ export interface Artist {
   exhibitions: Exhibition[];
   categories: Category[];
 }
+
+export interface PublicSlug {
+  slug: string;
+}
