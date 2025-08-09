@@ -4,7 +4,7 @@ import { Artist, PublicSlug } from '@/types';
 export const getArtistBySlug = async (slug: string): Promise<Artist> => {
   try {
     // Substitua 'sua-api.com' pelo seu domínio real
-    const response = await fetch(`http://localhost:3000/users/public/${slug}`);
+    const response = await fetch(`https://backend-portifolio-564e.onrender.com/users/public/${slug}`);
     if (!response.ok) {
       throw new Error('Erro ao buscar o artista.');
     }
@@ -19,7 +19,7 @@ export const getArtistBySlug = async (slug: string): Promise<Artist> => {
 export const getPublicSlugs = async (): Promise<PublicSlug[]> => {
   try {
     // Substitua 'sua-api.com' pelo seu domínio real
-    const response = await fetch(`http://localhost:3000/users/public-slugs`);
+    const response = await fetch(`https://backend-portifolio-564e.onrender.com/users/public-slugs`);
     if (!response.ok) {
       throw new Error('Erro ao buscar os slugs públicos.');
     }
