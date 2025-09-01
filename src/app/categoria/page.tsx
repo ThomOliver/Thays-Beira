@@ -8,8 +8,7 @@ import Link from "next/link";
 
 const CategoriesSection = ({
   categories,
-  artworks,
-  artistSlug,
+  artworks
 }: {
   categories: Category[];
   artworks: Artwork[];

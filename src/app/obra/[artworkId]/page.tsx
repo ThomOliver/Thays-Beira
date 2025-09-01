@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getArtistBySlug } from "@/services/artistService";
 import { Artwork } from "@/types";
+import { useArtistStore } from "@/store/artistStore";
 
 export default function ObraPage() {
-  const { slug, artworkId } = useParams();
+  const { artworkId } = useParams();
   const router = useRouter();
+  const { slug } = useArtistStore();
 
   const [artwork, setArtwork] = useState<Artwork | null>(null);
   const [loading, setLoading] = useState(true);
