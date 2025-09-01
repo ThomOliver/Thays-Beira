@@ -15,7 +15,7 @@ const CategoriesSection = ({
   artistSlug: string;
 }) => {
   return (
-    <section className="p-6">
+    <section className="p-6 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <h2 className="text-3xl font-bold mb-4">Categorias</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {categories.map((category) => {
