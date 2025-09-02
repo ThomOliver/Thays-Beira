@@ -187,6 +187,13 @@ export default function Header() {
                 <FaLinkedinIn className="w-5 h-5" />
               </a>
             )}
+            <span
+              className={`text-lg select-none pl-1 ${
+                isOnTop ? "text-white" : "text-gray-400 dark:text-gray-600"
+              }`}
+            >
+              |
+            </span>
           </div>
 
 
