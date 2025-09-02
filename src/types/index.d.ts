@@ -30,6 +30,11 @@ export interface Artist {
   id: string;
   name: string;
   bio: string;
+  instagram: string;
+  facebook: string;
+  tiktok: string;
+  xtwitter: string;
+  linkedin: string;
   profilePic: string;
   createdAt: string;
   artworks: Artwork[];

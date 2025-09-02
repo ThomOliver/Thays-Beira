@@ -6,7 +6,7 @@ import { useUIStore } from "@/store/useUIStore";
 import { useRouter, usePathname } from "next/navigation";
 import { useArtistStore } from "@/store/artistStore";
 import { getArtistBySlug } from "@/services/artistService";
-import { FaInstagram, FaFacebookF, FaTiktok } from "react-icons/fa";
+import { FaInstagram, FaFacebookF, FaTiktok, FaLinkedinIn } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 export default function Header() {
@@ -123,54 +123,72 @@ export default function Header() {
         <div className="flex items-center space-x-4">
           {/* Redes sociais */}
           <div className="hidden md:flex items-center space-x-4">
-            <a
-              href="https://www.instagram.com/thays.beira/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`transition-colors duration-300 ${
-                isOnTop ? "text-white hover:text-pink-400" : "text-gray-700 dark:text-gray-300 hover:text-pink-400"
-              }`}
-            >
-              <FaInstagram className="w-5 h-5" />
-            </a>
-            <a
-              href="https://facebook.com/seu_perfil"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`transition-colors duration-300 ${
-                isOnTop ? "text-white hover:text-blue-500" : "text-gray-700 dark:text-gray-300 hover:text-blue-500"
-              }`}
-            >
-              <FaFacebookF className="w-5 h-5" />
-            </a>
-            <a
-              href="https://tiktok.com/@seu_perfil"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`transition-colors duration-300 ${
-                isOnTop ? "text-white hover:text-gray-200" : "text-gray-700 dark:text-gray-300 hover:text-gray-200"
-              }`}
-            >
-              <FaTiktok className="w-5 h-5" />
-            </a>
-            <a
-              href="https://x.com/seu_perfil"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`transition-colors duration-300 ${
-                isOnTop ? "text-white hover:text-black dark:hover:text-white" : "text-gray-700 dark:text-gray-300 hover:text-black"
-              }`}
-            >
-              <FaXTwitter className="w-5 h-5" />
-            </a>
-            <span
-              className={`text-lg select-none pl-1 ${
-                isOnTop ? "text-white" : "text-gray-400 dark:text-gray-600"
-              }`}
-            >
-              |
-            </span>
+            {artist?.instagram && (
+              <a
+                href={artist.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition-colors duration-300 ${
+                  isOnTop ? "text-white hover:text-pink-400" : "text-gray-700 dark:text-gray-300 hover:text-pink-400"
+                }`}
+              >
+                <FaInstagram className="w-5 h-5" />
+              </a>
+            )}
+
+            {artist?.facebook && (
+              <a
+                href={artist.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition-colors duration-300 ${
+                  isOnTop ? "text-white hover:text-blue-500" : "text-gray-700 dark:text-gray-300 hover:text-blue-500"
+                }`}
+              >
+                <FaFacebookF className="w-5 h-5" />
+              </a>
+            )}
+
+            {artist?.tiktok && (
+              <a
+                href={artist.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition-colors duration-300 ${
+                  isOnTop ? "text-white hover:text-gray-200" : "text-gray-700 dark:text-gray-300 hover:text-gray-200"
+                }`}
+              >
+                <FaTiktok className="w-5 h-5" />
+              </a>
+            )}
+
+            {artist?.xtwitter && (
+              <a
+                href={artist.xtwitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition-colors duration-300 ${
+                  isOnTop ? "text-white hover:text-black dark:hover:text-white" : "text-gray-700 dark:text-gray-300 hover:text-black"
+                }`}
+              >
+                <FaXTwitter className="w-5 h-5" />
+              </a>
+            )}
+
+            {artist?.linkedin && (
+              <a
+                href={artist.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition-colors duration-300 ${
+                  isOnTop ? "text-white hover:text-blue-600" : "text-gray-700 dark:text-gray-300 hover:text-blue-600"
+                }`}
+              >
+                <FaLinkedinIn className="w-5 h-5" />
+              </a>
+            )}
           </div>
+
 
           {/* Tema */}
           <button
