@@ -16,7 +16,7 @@ const CategoriesSection = ({
   artistSlug: string;
 }) => {
   return (
-    <section className="p-6 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <section className="p-6 bg-bg dark:bg-bg text-text dark:text-text">
       <h2 className="text-3xl font-bold mb-4">Categorias</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {categories.map((category) => {
@@ -60,12 +60,11 @@ const CategoriesSection = ({
 };
 
 const ArtistPortfolioPage = () => {
-  const artistSlug = "thays-beira";
-  const { artist, setArtist, setLoading, loading, setError } = useArtistStore();
+  const { artist, setArtist, setLoading, loading, setError, slug } = useArtistStore();
 
   useEffect(() => {
     setLoading(true);
-    getArtistBySlug(artistSlug)
+    getArtistBySlug(slug)
       .then((data) => {
         setArtist(data);
       })
@@ -75,7 +74,7 @@ const ArtistPortfolioPage = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [artistSlug, setArtist, setLoading, setError]);
+  }, [slug, setArtist, setLoading, setError]);
 
   if (loading) {
     return (
@@ -94,13 +93,13 @@ const ArtistPortfolioPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-0">
+    <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text p-0">
 
       {artist.categories && artist.artworks && (
         <CategoriesSection
           categories={artist.categories}
           artworks={artist.artworks}
-          artistSlug={artistSlug}
+          artistSlug={slug}
         />
       )}
     </div>

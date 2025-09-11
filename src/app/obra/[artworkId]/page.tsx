@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image"; // Next/Image para otimização
+import Image from "next/image";
 import { getArtistBySlug } from "@/services/artistService";
 import { Artwork } from "@/types";
 import { useArtistStore } from "@/store/artistStore";
@@ -36,7 +36,9 @@ export default function ObraPage() {
     };
 
     fetchArtwork();
-  }, [slug, artworkId, setLoading, setError]); // ✅ todos os setters no array de dependências
+  }, [slug, artworkId, setLoading, setError]);
+
+  console.log("URL da imagem:", artwork?.imageUrl);
 
   if (loading) {
     return (
@@ -73,15 +75,16 @@ export default function ObraPage() {
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
         {/* Imagem convertida para Next/Image */}
-        <div className="relative w-full h-[500px] lg:h-auto">
-          <Image
-            src={artwork.imageUrl}
-            alt={artwork.title}
-            fill
-            className="rounded-lg object-cover shadow-lg"
-            priority
-          />
-        </div>
+<div className="w-full">
+  <Image
+    src={artwork.imageUrl}
+    alt={artwork.title}
+    width={800}
+    height={600}
+    className="rounded-lg object-cover shadow-lg w-full h-auto"
+    priority
+  />
+</div>
 
         {/* Informações */}
         <div className="flex flex-col justify-center">

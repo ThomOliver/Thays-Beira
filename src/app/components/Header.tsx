@@ -3,15 +3,11 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import {
   Menu,
   Sun,
-  Moon,
-  Instagram,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Music2,
+  Moon
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useUIStore } from "@/store/useUIStore";
@@ -21,169 +17,14 @@ import throttle from "lodash/throttle";
 import React from "react";
 import { useSyncTheme } from "@/hooks/useSyncTheme";
 
-interface NavItem {
-  label: string;
-  href: string;
-}
-
-interface NavMenuProps {
-  navItems: NavItem[];
-  pathname: string;
-  handleLinkClick: (href: string) => void;
-  isOnTop: boolean;
-}
-
-// NavMenu memoizado
-const NavMenu: React.FC<NavMenuProps> = ({
-  navItems,
-  pathname,
-  handleLinkClick,
-  isOnTop,
-}) => (
-  <nav className="hidden md:flex items-center gap-4">
-    {navItems.map((item, idx) => {
-      const isActive = pathname === item.href;
-      return (
-        <div key={item.href} className="flex items-center gap-3 relative">
-          <button
-            onClick={() => handleLinkClick(item.href)}
-            className={`relative text-base font-medium tracking-wide transition-colors duration-300 ${
-              isOnTop
-                ? isActive
-                  ? "text-primary"
-                  : "text-white hover:text-primary"
-                : isActive
-                ? "text-primary"
-                : "text-gray-700 dark:text-gray-300 hover:text-primary"
-            }`}
-          >
-            {item.label}
-            {isActive && (
-              <span className="absolute left-0 -bottom-0.5 w-full h-[2px] bg-primary rounded-full"></span>
-            )}
-          </button>
-          {idx < navItems.length - 1 && (
-            <span
-              className={`text-lg select-none pl-1 ${
-                isOnTop
-                  ? "text-white"
-                  : "text-gray-400 dark:text-gray-600"
-              }`}
-            >
-              |
-            </span>
-          )}
-        </div>
-      );
-    })}
-  </nav>
-);
-NavMenu.displayName = "NavMenu";
-
-interface Artist {
-  instagram?: string;
-  facebook?: string;
-  tiktok?: string;
-  xtwitter?: string;
-  linkedin?: string;
-  profilePic?: string;
-  name?: string;
-}
-
-interface SocialIconsProps {
-  artist?: Artist | null;
-  isOnTop: boolean;
-}
-
-// SocialIcons memoizado
-const SocialIcons: React.FC<SocialIconsProps> = ({ artist, isOnTop }) => (
-  <div className="hidden md:flex items-center space-x-4">
-    {artist?.instagram && (
-      <a
-        href={artist.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`transition-colors duration-300 ${
-          isOnTop
-            ? "text-white hover:text-pink-400"
-            : "text-gray-700 dark:text-gray-300 hover:text-pink-400"
-        }`}
-      >
-        <Instagram className="w-5 h-5" />
-      </a>
-    )}
-    {artist?.facebook && (
-      <a
-        href={artist.facebook}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`transition-colors duration-300 ${
-          isOnTop
-            ? "text-white hover:text-blue-500"
-            : "text-gray-700 dark:text-gray-300 hover:text-blue-500"
-        }`}
-      >
-        <Facebook className="w-5 h-5" />
-      </a>
-    )}
-    {artist?.tiktok && (
-      <a
-        href={artist.tiktok}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`transition-colors duration-300 ${
-          isOnTop
-            ? "text-white hover:text-gray-200"
-            : "text-gray-700 dark:text-gray-300 hover:text-gray-200"
-        }`}
-      >
-        <Music2 className="w-5 h-5" />
-      </a>
-    )}
-    {artist?.xtwitter && (
-      <a
-        href={artist.xtwitter}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`transition-colors duration-300 ${
-          isOnTop
-            ? "text-white hover:text-black dark:hover:text-white"
-            : "text-gray-700 dark:text-gray-300 hover:text-black"
-        }`}
-      >
-        <Twitter className="w-5 h-5" />
-      </a>
-    )}
-    {artist?.linkedin && (
-      <a
-        href={artist.linkedin}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`transition-colors duration-300 ${
-          isOnTop
-            ? "text-white hover:text-blue-600"
-            : "text-gray-700 dark:text-gray-300 hover:text-blue-600"
-        }`}
-      >
-        <Linkedin className="w-5 h-5" />
-      </a>
-    )}
-    <span
-      className={`text-lg select-none pl-1 ${
-        isOnTop ? "text-white" : "text-gray-400 dark:text-gray-600"
-      }`}
-    >
-      |
-    </span>
-  </div>
-);
-SocialIcons.displayName = "SocialIcons";
+const NavMenu = dynamic(() => import('@/app/components/NavMenu').then(mod => mod.default));
+const SocialIcons = dynamic(() => import('@/app/components/SocialIcons').then(mod => mod.default));
 
 const HeaderComponent: React.FC = () => {
   const { isDark, toggleMenu, toggleTheme, initializeTheme } = useUIStore();
   const router = useRouter();
   const pathname = usePathname();
-  const { artist, setArtist, setLoading, setError } = useArtistStore();
+  const { artist, setArtist, setLoading, setError, slug } = useArtistStore();
   const [isOnTop, setIsOnTop] = useState(true);
   useSyncTheme();
 
@@ -201,7 +42,7 @@ const HeaderComponent: React.FC = () => {
     initializeTheme();
     if (!artist) {
       setLoading(true);
-      getArtistBySlug("thays-beira")
+      getArtistBySlug(slug)
         .then(setArtist)
         .catch(() => setError("Não foi possível carregar os dados do artista."))
         .finally(() => setLoading(false));
@@ -249,7 +90,7 @@ const HeaderComponent: React.FC = () => {
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         isOnTop
           ? "bg-gradient-to-b from-black/90 via-black/50 to-transparent"
-          : "backdrop-blur-md dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 shadow-sm"
+          : "backdrop-blur-md dark:border-gray-800 bg-white/80 dark:bg-bg/80 shadow-sm"
       }`}
     >
       <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -258,12 +99,12 @@ const HeaderComponent: React.FC = () => {
             href="/"
             className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="relative w-10 h-10">
+            <div className="relative">
               <Image
                 src={artist?.profilePic || "https://placehold.co/40x40"}
                 alt={artist?.name || "Artista"}
-                width={40}
-                height={40}
+                width={50}
+                height={50}
                 className="rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition-all duration-300"
               />
             </div>

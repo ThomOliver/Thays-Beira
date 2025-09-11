@@ -6,11 +6,9 @@ import { useEffect, useState, useMemo } from "react";
 
 // Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 
 import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 
 interface HeroSliderProps {
   artworks: Artwork[];
@@ -23,7 +21,6 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
     setMounted(true);
   }, []);
 
-  // 🔹 useMemo sempre chamado, mesmo que artworks esteja vazio
   const slides = useMemo(() => {
     if (!artworks || artworks.length <= 1) return [];
     return artworks.slice(1).map((art) => (
@@ -77,13 +74,11 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
       {/* Swiper só após mount */}
       {mounted && artworks.length > 1 && (
         <Swiper
-          modules={[Autoplay, Pagination, Navigation]}
+          modules={[Autoplay]}
           spaceBetween={0}
           slidesPerView={1}
           loop
           autoplay={{ delay: 3000, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
-          navigation
           className="w-full h-[500px] mt-[-500px]"
         >
           <SwiperSlide key={firstArt.id}>

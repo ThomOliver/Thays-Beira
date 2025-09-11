@@ -57,7 +57,7 @@ export default function CategoriaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-20">
+    <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text p-20">
       {/* Cabeçalho */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
         <h1 className="text-4xl font-extrabold">{categoryName}</h1>

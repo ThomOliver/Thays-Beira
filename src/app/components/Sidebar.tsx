@@ -58,7 +58,7 @@ SocialLinks.displayName = "SocialLinks";
 
 function SidebarComponent() {
   const { isMenuOpen, isDark, toggleMenu, toggleTheme, initializeTheme, collapsed } = useUIStore();
-  const { artist, setArtist, setLoading, setError } = useArtistStore();
+  const { artist, setArtist, setLoading, setError, slug } = useArtistStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -66,7 +66,7 @@ function SidebarComponent() {
 
     if (!artist) {
       setLoading(true);
-      getArtistBySlug("thays-beira")
+      getArtistBySlug(slug)
         .then(setArtist)
         .catch(() => setError("Não foi possível carregar os dados do artista."))
         .finally(() => setLoading(false));
@@ -80,11 +80,10 @@ function SidebarComponent() {
 
   const menuItems = useMemo(
     () => [
-      { label: "Dashboard", href: "/dashboard" },
-      { label: "Usuário", href: "/user" },
-      { label: "Categoria", href: "/category" },
+      { label: "Sobre", href: "/about" },
       { label: "Obras", href: "/artwork" },
-      { label: "Exposição", href: "/exhibition" },
+      { label: "Exposições", href: "/exhibition" },
+      { label: "Contato", href: "/contact" },
     ],
     []
   );

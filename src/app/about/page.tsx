@@ -12,7 +12,7 @@ const Abouth = () => {
    if (error || !artist) return <PageState type="error" message="Artista não encontrado." />;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-0">
+    <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text p-0">
        <ArtistAbout artist={artist} />
    </div>
   );
