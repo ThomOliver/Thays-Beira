@@ -3,57 +3,53 @@
 import { useUIStore } from "@/store/useUIStore";
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import { Sun, Moon, Instagram, Facebook, Twitter, Linkedin, Music2 } from "lucide-react";
 import { useArtistStore } from "@/store/artistStore";
 import { getArtistBySlug } from "@/services/artistService";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import React from "react";
 
-// Dynamic imports para reduzir bundle
-const FaInstagram = dynamic(() => import("react-icons/fa").then((mod) => mod.FaInstagram), { ssr: false });
-const FaFacebookF = dynamic(() => import("react-icons/fa").then((mod) => mod.FaFacebookF), { ssr: false });
-const FaTiktok = dynamic(() => import("react-icons/fa").then((mod) => mod.FaTiktok), { ssr: false });
-const FaXTwitter = dynamic(() => import("react-icons/fa6").then((mod) => mod.FaXTwitter), { ssr: false });
-
 // Menu memoizado
-const MenuItems = React.memo(({ items, onClick }: { items: { label: string; href: string }[]; onClick: (href: string) => void }) => (
-  <nav className="flex flex-col space-y-4 mt-6 px-4">
-    {items.map((item) => (
-      <button
-        key={item.href}
-        onClick={() => onClick(item.href)}
-        className="text-left hover:text-primary transition-colors"
-        aria-label={`Ir para ${item.label}`}
-      >
-        {item.label}
-      </button>
-    ))}
-  </nav>
-));
+const MenuItems = React.memo(
+  ({ items, onClick }: { items: { label: string; href: string }[]; onClick: (href: string) => void }) => (
+    <nav className="flex flex-col space-y-4 mt-6 px-4">
+      {items.map((item) => (
+        <button
+          key={item.href}
+          onClick={() => onClick(item.href)}
+          className="text-left hover:text-primary transition-colors"
+          aria-label={`Ir para ${item.label}`}
+        >
+          {item.label}
+        </button>
+      ))}
+    </nav>
+  )
+);
 
-// Redes sociais memoizadas
+// Redes sociais memoizadas (usando os mesmos ícones do Header)
 type SocialLink = {
-  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  icon: React.ComponentType<{ className?: string }>;
   url?: string | null;
   label: string;
 };
 
 const SocialLinks = React.memo(({ socialLinks }: { socialLinks: SocialLink[] }) => (
   <div className="flex items-center justify-start gap-3">
-    {socialLinks.map((social, i) =>
-      social.url ? (
-        <a
-          key={i}
-          href={social.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={social.label}
-          aria-label={social.label}
-        >
-          <social.icon className="w-5 h-5 hover:text-primary transition-colors" />
-        </a>
-      ) : null
+    {socialLinks.map(
+      (social, i) =>
+        social.url && (
+          <a
+            key={i}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={social.label}
+            aria-label={social.label}
+          >
+            <social.icon className="w-5 h-5 hover:text-primary transition-colors" />
+          </a>
+        )
     )}
   </div>
 ));
@@ -93,10 +89,11 @@ function SidebarComponent() {
 
   const socialLinks = useMemo(
     () => [
-      { icon: FaInstagram, url: artist?.instagram, label: "Instagram" },
-      { icon: FaFacebookF, url: artist?.facebook, label: "Facebook" },
-      { icon: FaTiktok, url: artist?.tiktok, label: "TikTok" },
-      { icon: FaXTwitter, url: artist?.xtwitter, label: "Twitter/X" },
+      { icon: Instagram, url: artist?.instagram, label: "Instagram" },
+      { icon: Facebook, url: artist?.facebook, label: "Facebook" },
+      { icon: Music2, url: artist?.tiktok, label: "TikTok" },
+      { icon: Twitter, url: artist?.xtwitter, label: "Twitter/X" },
+      { icon: Linkedin, url: artist?.linkedin, label: "LinkedIn" },
     ],
     [artist]
   );
@@ -135,12 +132,11 @@ function SidebarComponent() {
           aria-label="Alternar tema claro/escuro"
           className="self-start"
         >
-          {isDark ? <SunIcon className="h-6 w-6 text-yellow-400" /> : <MoonIcon className="h-6 w-6" />}
+          {isDark ? <Sun className="h-6 w-6 text-yellow-400" /> : <Moon className="h-6 w-6" />}
         </button>
       </div>
     </aside>
   );
 }
 
-// Memoizando Sidebar completo
 export default React.memo(SidebarComponent);
