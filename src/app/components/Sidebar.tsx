@@ -33,22 +33,27 @@ const MenuItems = React.memo(({ items, onClick }: { items: { label: string; href
 ));
 
 // Redes sociais memoizadas
-const SocialLinks = React.memo(({ socialLinks }: any) => (
+type SocialLink = {
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  url?: string | null;
+  label: string;
+};
+
+const SocialLinks = React.memo(({ socialLinks }: { socialLinks: SocialLink[] }) => (
   <div className="flex items-center justify-start gap-3">
-    {socialLinks.map(
-      (social: any, i: number) =>
-        social.url && (
-          <a
-            key={i}
-            href={social.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={social.label}
-            aria-label={social.label}
-          >
-            <social.icon className="w-5 h-5 hover:text-primary transition-colors" />
-          </a>
-        )
+    {socialLinks.map((social, i) =>
+      social.url ? (
+        <a
+          key={i}
+          href={social.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={social.label}
+          aria-label={social.label}
+        >
+          <social.icon className="w-5 h-5 hover:text-primary transition-colors" />
+        </a>
+      ) : null
     )}
   </div>
 ));

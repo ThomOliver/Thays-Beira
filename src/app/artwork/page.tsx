@@ -3,7 +3,7 @@
 import { useArtistStore } from "@/store/artistStore";
 import { useArtistData } from "@/hooks/useArtistData";
 import { PageState } from "../components/PageStateProps";
-import { CategoryItens } from "../components/CategoryItem";
+import CategoryItens  from "../components/CategoryItem";
 
 const ArtistPortfolioPage = () => {
   const { slug } = useArtistStore();

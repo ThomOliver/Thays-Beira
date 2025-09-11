@@ -12,10 +12,23 @@ import throttle from 'lodash/throttle';
 import React from 'react';
 import { useSyncTheme } from "@/hooks/useSyncTheme"; //
 
+
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface NavMenuProps {
+  navItems: NavItem[];
+  pathname: string;
+  handleLinkClick: (href: string) => void;
+  isOnTop: boolean;
+}
+
 // NavMenu memoizado
-const NavMenu = React.memo(({ navItems, pathname, handleLinkClick, isOnTop }: any) => (
+const NavMenu = React.memo(({ navItems, pathname, handleLinkClick, isOnTop }: NavMenuProps) => (
   <nav className="hidden md:flex items-center gap-4">
-    {navItems.map((item: any, idx: number) => {
+    {navItems.map((item, idx) => {
       const isActive = pathname === item.href;
       return (
         <div key={item.href} className="flex items-center gap-3 relative">
@@ -49,8 +62,24 @@ const NavMenu = React.memo(({ navItems, pathname, handleLinkClick, isOnTop }: an
   </nav>
 ));
 
+interface Artist {
+  instagram?: string;
+  facebook?: string;
+  tiktok?: string;
+  xtwitter?: string;
+  linkedin?: string;
+  profilePic?: string;
+  name?: string;
+}
+
+interface SocialIconsProps {
+  artist?: Artist | null;
+  isOnTop: boolean;
+}
+
+
 // SocialIcons memoizado
-const SocialIcons = React.memo(({ artist, isOnTop }: any) => (
+const SocialIcons = React.memo(({ artist, isOnTop }: SocialIconsProps) => (
   <div className="hidden md:flex items-center space-x-4">
     {artist?.instagram && (
       <a
