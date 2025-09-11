@@ -26,6 +26,7 @@ const MenuItems = React.memo(
     </nav>
   )
 );
+MenuItems.displayName = "MenuItems";
 
 // Redes sociais memoizadas (usando os mesmos ícones do Header)
 type SocialLink = {
@@ -53,6 +54,7 @@ const SocialLinks = React.memo(({ socialLinks }: { socialLinks: SocialLink[] }) 
     )}
   </div>
 ));
+SocialLinks.displayName = "SocialLinks";
 
 function SidebarComponent() {
   const { isMenuOpen, isDark, toggleMenu, toggleTheme, initializeTheme, collapsed } = useUIStore();
@@ -138,5 +140,6 @@ function SidebarComponent() {
     </aside>
   );
 }
+SidebarComponent.displayName = "SidebarComponent";
 
 export default React.memo(SidebarComponent);

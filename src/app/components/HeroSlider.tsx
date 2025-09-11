@@ -2,7 +2,6 @@
 
 import { Artwork } from "@/types";
 import Image from "next/image";
-import Head from "next/head";
 import { useEffect, useState, useMemo } from "react";
 
 // Swiper só carrega quando for necessário
@@ -31,7 +30,7 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
   // Slides do Swiper (menos o primeiro)
   const slides = useMemo(
     () =>
-      artworks.slice(1).map((art, index) => (
+      artworks.slice(1).map((art) => (
         <SwiperSlide key={art.id}>
           <div className="relative w-full h-[500px]">
             <Image
@@ -52,16 +51,11 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
           </div>
         </SwiperSlide>
       )),
-    [JSON.stringify(artworks)]
+    [artworks] // 🔹 dependência correta
   );
 
   return (
     <>
-      {/* Preload da primeira imagem */}
-      <Head>
-        <link rel="preload" as="image" href={firstArt.imageUrl} />
-      </Head>
-
       {/* Primeiro slide renderizado estático (garante LCP rápido) */}
       <div className="relative w-full h-[500px]">
         <Image
@@ -69,7 +63,7 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
           alt={firstArt.title}
           fill
           sizes="100vw"
-          priority
+          priority // 🔹 já garante preload do LCP
           placeholder="empty"
           className="object-cover"
         />
@@ -122,4 +116,5 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
   );
 };
 
+HeroSlider.displayName = "HeroSlider"; // 🔹 evita eslint/react-display-name
 export default HeroSlider;
