@@ -4,7 +4,7 @@ import { Artwork } from "@/types";
 import Image from "next/image";
 import { useEffect, useState, useMemo } from "react";
 
-// Swiper só carrega quando for necessário
+// Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
@@ -23,47 +23,46 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
     setMounted(true);
   }, []);
 
+  // 🔹 useMemo sempre chamado, mesmo que artworks esteja vazio
+  const slides = useMemo(() => {
+    if (!artworks || artworks.length <= 1) return [];
+    return artworks.slice(1).map((art) => (
+      <SwiperSlide key={art.id}>
+        <div className="relative w-full h-[500px]">
+          <Image
+            src={art.imageUrl}
+            alt={art.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            loading="lazy"
+            placeholder="empty"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-6 text-white">
+            <h2 className="text-3xl font-bold">{art.title}</h2>
+            {art.description && (
+              <p className="text-sm mt-2 max-w-lg">{art.description}</p>
+            )}
+          </div>
+        </div>
+      </SwiperSlide>
+    ));
+  }, [artworks]);
+
   if (!artworks || artworks.length === 0) return null;
 
   const firstArt = artworks[0];
 
-  // Slides do Swiper (menos o primeiro)
-  const slides = useMemo(
-    () =>
-      artworks.slice(1).map((art) => (
-        <SwiperSlide key={art.id}>
-          <div className="relative w-full h-[500px]">
-            <Image
-              src={art.imageUrl}
-              alt={art.title}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              loading="lazy"
-              placeholder="empty"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-6 text-white">
-              <h2 className="text-3xl font-bold">{art.title}</h2>
-              {art.description && (
-                <p className="text-sm mt-2 max-w-lg">{art.description}</p>
-              )}
-            </div>
-          </div>
-        </SwiperSlide>
-      )),
-    [artworks] // 🔹 dependência correta
-  );
-
   return (
     <>
-      {/* Primeiro slide renderizado estático (garante LCP rápido) */}
+      {/* Primeiro slide estático */}
       <div className="relative w-full h-[500px]">
         <Image
           src={firstArt.imageUrl}
           alt={firstArt.title}
           fill
           sizes="100vw"
-          priority // 🔹 já garante preload do LCP
+          priority
           placeholder="empty"
           className="object-cover"
         />
@@ -75,7 +74,7 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
         </div>
       </div>
 
-      {/* Swiper só carrega depois que o componente montar */}
+      {/* Swiper só após mount */}
       {mounted && artworks.length > 1 && (
         <Swiper
           modules={[Autoplay, Pagination, Navigation]}
@@ -85,9 +84,8 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           pagination={{ clickable: true }}
           navigation
-          className="w-full h-[500px] mt-[-500px]" // sobrepõe no mesmo espaço
+          className="w-full h-[500px] mt-[-500px]"
         >
-          {/* Primeiro slide dentro do Swiper também */}
           <SwiperSlide key={firstArt.id}>
             <div className="relative w-full h-[500px]">
               <Image
@@ -108,7 +106,6 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
             </div>
           </SwiperSlide>
 
-          {/* Demais slides */}
           {slides}
         </Swiper>
       )}
@@ -116,5 +113,5 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
   );
 };
 
-HeroSlider.displayName = "HeroSlider"; // 🔹 evita eslint/react-display-name
+HeroSlider.displayName = "HeroSlider";
 export default HeroSlider;
