@@ -37,8 +37,8 @@ const CategoriesSection = ({
                       alt={artwork.title}
                       width={400}
                       height={320}
-                      className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white p-4">
                       <h3 className="text-xl font-semibold">{category.name}</h3>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image"; // 🔹 usar Next/Image
+import Image from "next/image"; // Next/Image para otimização
 import { getArtistBySlug } from "@/services/artistService";
 import { Artwork } from "@/types";
 import { useArtistStore } from "@/store/artistStore";
@@ -10,9 +10,9 @@ import { useArtistStore } from "@/store/artistStore";
 export default function ObraPage() {
   const { artworkId } = useParams();
   const router = useRouter();
-  const { slug, setArtist, setLoading, setError } = useArtistStore(); // 🔹 pegar setters se necessário
+  const { slug, setLoading, setError } = useArtistStore(); // apenas setters usados
 
-  const [artwork, setArtworkLocal] = useState<Artwork | null>(null);
+  const [artwork, setArtwork] = useState<Artwork | null>(null);
   const [loading, setLoadingLocal] = useState(true);
 
   useEffect(() => {
@@ -20,15 +20,15 @@ export default function ObraPage() {
 
     const fetchArtwork = async () => {
       try {
-        setLoading(true);
-        const data = await getArtistBySlug(slug as string);
+        setLoading(true); // Zustand loading
+        const data = await getArtistBySlug(slug);
         const found = (data.artworks as Artwork[]).find(
           (art) => art.id === artworkId
         );
-        setArtworkLocal(found || null);
+        setArtwork(found || null);
       } catch (error) {
         console.error("Erro ao carregar obra:", error);
-        setError && setError("Não foi possível carregar a obra.");
+        setError?.("Não foi possível carregar a obra.");
       } finally {
         setLoading(false);
         setLoadingLocal(false);
@@ -36,7 +36,7 @@ export default function ObraPage() {
     };
 
     fetchArtwork();
-  }, [slug, artworkId, setLoading, setError]); // 🔹 adicionar setters como dependências
+  }, [slug, artworkId, setLoading, setError]); // ✅ todos os setters no array de dependências
 
   if (loading) {
     return (
