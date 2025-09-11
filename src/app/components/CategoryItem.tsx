@@ -10,7 +10,7 @@ interface CategoryItensProps {
   artistSlug: string;
 }
 
-export const CategoryItens = ({ categories, artworks }: CategoryItensProps) => {
+ const CategoryItens = ({ categories, artworks }: CategoryItensProps) => {
   return (
     <section className="p-6">
       <h2 className="text-3xl font-bold mb-4">Categorias</h2>
@@ -32,3 +32,4 @@ export const CategoryItens = ({ categories, artworks }: CategoryItensProps) => {
     </section>
   );
 };
+export default CategoryItens;

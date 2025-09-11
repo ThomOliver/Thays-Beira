@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <footer className="w-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-6">
       <div className="container mx-auto text-center">
@@ -21,3 +21,5 @@ export const Footer = () => {
     </footer>
   );
 };
+
+export default Footer;

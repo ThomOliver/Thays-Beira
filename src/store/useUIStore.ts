@@ -15,27 +15,9 @@ export const useUIStore = create<UIState>((set) => ({
   isDark: false,
   collapsed: false,
 
-  toggleMenu: () =>
-    set((state) => ({ isMenuOpen: !state.isMenuOpen })),
-
-  toggleCollapsed: () =>
-    set((state) => ({ collapsed: !state.collapsed })),
-
-  toggleTheme: () =>
-    set((state) => {
-      const newDark = !state.isDark;
-      if (typeof window !== "undefined") {
-        const root = document.documentElement;
-        if (newDark) {
-          root.classList.add("dark");
-          localStorage.setItem("theme", "dark");
-        } else {
-          root.classList.remove("dark");
-          localStorage.setItem("theme", "light");
-        }
-      }
-      return { isDark: newDark };
-    }),
+  toggleMenu: () => set((s) => ({ isMenuOpen: !s.isMenuOpen })),
+  toggleCollapsed: () => set((s) => ({ collapsed: !s.collapsed })),
+  toggleTheme: () => set((s) => ({ isDark: !s.isDark })),
 
   initializeTheme: () => {
     if (typeof window === "undefined") return;
@@ -43,13 +25,6 @@ export const useUIStore = create<UIState>((set) => ({
     const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const stored = localStorage.getItem("theme");
     const isDark = stored === "dark" || (!stored && isSystemDark);
-
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
 
     set({ isDark });
   },

@@ -5,6 +5,7 @@ import { useArtistStore } from "@/store/artistStore";
 import { getArtistBySlug } from "@/services/artistService";
 import { Artwork, Category } from "@/types";
 import Link from "next/link";
+import Image from "next/image";
 
 const CategoriesSection = ({
   categories,
@@ -31,10 +32,13 @@ const CategoriesSection = ({
               <div className="relative rounded-lg overflow-hidden shadow-lg group cursor-pointer">
                 {artwork ? (
                   <>
-                    <img
+                    <Image
                       src={artwork.imageUrl}
                       alt={artwork.title}
+                      width={400}
+                      height={320}
                       className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white p-4">
                       <h3 className="text-xl font-semibold">{category.name}</h3>
