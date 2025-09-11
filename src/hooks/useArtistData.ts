@@ -14,13 +14,14 @@ export function useArtistData(slug: string) {
 
   useEffect(() => {
     if (!slug) return;
+
     setLoading(true);
 
     getArtistBySlug(slug)
       .then(setArtist)
       .catch(() => setError("Não foi possível carregar os dados do artista."))
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [slug, setArtist, setLoading, setError]);
 
   return { artist, loading, error };
 }

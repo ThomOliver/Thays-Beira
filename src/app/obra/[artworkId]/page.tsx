@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image"; // 🔹 usar Next/Image
 import { getArtistBySlug } from "@/services/artistService";
 import { Artwork } from "@/types";
 import { useArtistStore } from "@/store/artistStore";
@@ -9,30 +10,33 @@ import { useArtistStore } from "@/store/artistStore";
 export default function ObraPage() {
   const { artworkId } = useParams();
   const router = useRouter();
-  const { slug } = useArtistStore();
+  const { slug, setArtist, setLoading, setError } = useArtistStore(); // 🔹 pegar setters se necessário
 
-  const [artwork, setArtwork] = useState<Artwork | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [artwork, setArtworkLocal] = useState<Artwork | null>(null);
+  const [loading, setLoadingLocal] = useState(true);
 
   useEffect(() => {
     if (!slug || !artworkId) return;
 
     const fetchArtwork = async () => {
       try {
+        setLoading(true);
         const data = await getArtistBySlug(slug as string);
         const found = (data.artworks as Artwork[]).find(
           (art) => art.id === artworkId
         );
-        setArtwork(found || null);
+        setArtworkLocal(found || null);
       } catch (error) {
         console.error("Erro ao carregar obra:", error);
+        setError && setError("Não foi possível carregar a obra.");
       } finally {
         setLoading(false);
+        setLoadingLocal(false);
       }
     };
 
     fetchArtwork();
-  }, [slug, artworkId]);
+  }, [slug, artworkId, setLoading, setError]); // 🔹 adicionar setters como dependências
 
   if (loading) {
     return (
@@ -58,7 +62,6 @@ export default function ObraPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-20">
-      {/* Botão alinhado à direita */}
       <div className="flex justify-end mb-6">
         <button
           onClick={() => router.back()}
@@ -68,14 +71,15 @@ export default function ObraPage() {
         </button>
       </div>
 
-      {/* Layout responsivo: coluna no mobile, lado a lado em telas grandes */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-        {/* Imagem */}
-        <div>
-          <img
+        {/* Imagem convertida para Next/Image */}
+        <div className="relative w-full h-[500px] lg:h-auto">
+          <Image
             src={artwork.imageUrl}
             alt={artwork.title}
-            className="w-full rounded-lg shadow-lg object-cover"
+            fill
+            className="rounded-lg object-cover shadow-lg"
+            priority
           />
         </div>
 
