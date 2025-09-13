@@ -13,6 +13,7 @@ const Abouth = () => {
 
   return (
     <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text p-0">
+      <p>Sobre mim</p>
        <ArtistAbout artist={artist} />
    </div>
   );
