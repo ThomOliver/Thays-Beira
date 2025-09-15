@@ -4,7 +4,6 @@ import { Artwork } from "@/types";
 import Image from "next/image";
 import { useEffect, useState, useMemo } from "react";
 
-// Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 
@@ -52,7 +51,6 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
 
   return (
     <>
-      {/* Primeiro slide estático */}
       <div className="relative w-full h-[500px]">
         <Image
           src={firstArt.imageUrl}

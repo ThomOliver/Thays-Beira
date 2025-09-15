@@ -10,7 +10,7 @@ import { useArtistStore } from "@/store/artistStore";
 export default function ObraPage() {
   const { artworkId } = useParams();
   const router = useRouter();
-  const { slug, setLoading, setError } = useArtistStore(); // apenas setters usados
+  const { slug, setLoading, setError } = useArtistStore();
 
   const [artwork, setArtwork] = useState<Artwork | null>(null);
   const [loading, setLoadingLocal] = useState(true);
@@ -20,7 +20,7 @@ export default function ObraPage() {
 
     const fetchArtwork = async () => {
       try {
-        setLoading(true); // Zustand loading
+        setLoading(true);
         const data = await getArtistBySlug(slug);
         const found = (data.artworks as Artwork[]).find(
           (art) => art.id === artworkId
@@ -37,8 +37,6 @@ export default function ObraPage() {
 
     fetchArtwork();
   }, [slug, artworkId, setLoading, setError]);
-
-  console.log("URL da imagem:", artwork?.imageUrl);
 
   if (loading) {
     return (
