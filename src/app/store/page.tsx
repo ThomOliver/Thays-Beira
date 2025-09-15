@@ -5,13 +5,14 @@ import { useArtistStore } from "@/store/artistStore";
 import { getArtistBySlug } from "@/services/artistService";
 import Image from "next/image";
 import { useCartStore } from "@/store/cartStore";
+import { Artwork } from "@/types";
 
 const ArtistStorePage = () => {
   const { artist, slug, setArtist, setLoading, loading, setError } =
     useArtistStore();
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedArt, setSelectedArt] = useState<any | null>(null); // obra selecionada
-  const [quantity, setQuantity] = useState(1); // quantidade
+  const [selectedArt, setSelectedArt] = useState<Artwork | null>(null);
+  const [quantity, setQuantity] = useState(1);
   const addToCart = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
