@@ -12,6 +12,7 @@ export interface Artwork {
   price: number | null;
   createdAt: string;
   userId: string;
+  toSell: boolean;
 }
 
 export interface Exhibition {
@@ -24,6 +25,7 @@ export interface Exhibition {
 export interface Category {
   id: string;
   name: string;
+  position: number;
 }
 
 export interface Artist {

@@ -115,6 +115,7 @@ function SidebarComponent() {
               width={40}
               height={40}
               priority
+              unoptimized
               className="rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition-all duration-300"
             />
             <span className="text-lg font-bold truncate">{artist?.name || "Carregando..."}</span>

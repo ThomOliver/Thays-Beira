@@ -11,7 +11,7 @@ const ArtistPortfolioPage = () => {
 
   if (loading) return <PageState type="loading" message="Carregando..." />;
   if (error || !artist) return <PageState type="error" message="Artista não encontrado." />;
-console.log('artist',artist)
+  
   return (
     <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text p-0">
       {artist.categories && artist.artworks && (

@@ -105,6 +105,7 @@ const HeaderComponent: React.FC = () => {
                 alt={artist?.name || "Artista"}
                 width={50}
                 height={50}
+                unoptimized
                 className="rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition-all duration-300"
               />
             </div>
