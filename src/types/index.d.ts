@@ -13,6 +13,10 @@ export interface Artwork {
   createdAt: string;
   userId: string;
   toSell: boolean;
+  amount: number | null;
+  isPrint: boolean;
+  pricePrint: number | null;
+  amountPrint: number | null;
 }
 
 export interface Exhibition {
