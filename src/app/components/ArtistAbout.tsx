@@ -15,6 +15,7 @@ export const ArtistAbout = ({ artist }: { artist: Artist }) => {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
           className="w-full h-full object-cover shadow-lg rounded-full lg:rounded-none"
           priority
+          unoptimized
         />
       </div>
 
