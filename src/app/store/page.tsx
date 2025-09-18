@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useArtistStore } from "@/store/artistStore";
 import { getArtistBySlug } from "@/services/artistService";
 import { useCartStore } from "@/store/cartStore";
-import { Artwork } from "@/types";
+import { useArtworkStore } from "@/store/artworkStore";
 import ArtModal from "../components/store/ArtModal";
 import ArtworkCard from "../components/store/ArtworkCard";
 import CategoryFilter from "../components/store/CategoryFilter";
@@ -12,12 +12,15 @@ import CategoryFilter from "../components/store/CategoryFilter";
 const ArtistStorePage = () => {
   const { artist, slug, setArtist, setLoading, loading, setError } =
     useArtistStore();
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedArt, setSelectedArt] = useState<{
-    art: Artwork;
-    type: "original" | "print";
-  } | null>(null);
-  const [quantity, setQuantity] = useState(1);
+
+  const {
+    selectedCategory,
+    setSelectedCategory,
+    selectedArt,
+    setSelectedArt,
+    setQuantity,
+  } = useArtworkStore();
+
   const addToCart = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
@@ -54,7 +57,6 @@ const ArtistStorePage = () => {
 
   return (
     <section className="p-6 min-h-screen bg-bg text-text">
-
       <CategoryFilter
         categories={artist.categories}
         artworks={artist.artworks}
@@ -66,7 +68,9 @@ const ArtistStorePage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {filteredArtworks.flatMap((art) => {
             const items = [];
-            const categoryName = artist.categories.find((c) => c.id === art.categoryId)?.name;
+            const categoryName = artist.categories.find(
+              (c) => c.id === art.categoryId
+            )?.name;
 
             items.push(
               <ArtworkCard
@@ -104,13 +108,11 @@ const ArtistStorePage = () => {
       )}
 
       {selectedArt && (
-
         <ArtModal
           selectedArt={selectedArt}
           onClose={() => setSelectedArt(null)}
           onAddToCart={addToCart}
         />
-
       )}
     </section>
   );
