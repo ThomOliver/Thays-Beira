@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Category, Artwork } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
 
 interface CategoryCardProps {
   category: Category;
@@ -11,7 +11,7 @@ interface CategoryCardProps {
 
 export const CategoryCard = ({ category, artwork }: CategoryCardProps) => {
   return (
-    <Link href={`/categoria/${encodeURIComponent(category.id)}`}>
+    <Link href={`/artwork?category=${encodeURIComponent(category.id)}`}>
       <div className="relative rounded-lg overflow-hidden shadow-lg group cursor-pointer">
         {artwork ? (
           <>

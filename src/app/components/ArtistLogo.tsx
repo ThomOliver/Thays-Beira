@@ -1,20 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const ArtistLogo = ({ artist, isOnTop }: { artist: any; isOnTop: boolean }) => (
-  <Link href="/" className="flex items-center gap-3 cursor-pointer group">
+const ArtistLogo = ({
+  artist,
+  isOnTop,
+  className = "",
+  imgSize = 50,
+}: {
+  artist: any;
+  isOnTop: boolean;
+  className?: string;
+  imgSize?: number;
+}) => (
+  <Link
+    href="/"
+    className={`flex items-center gap-3 cursor-pointer group ${className}`}
+  >
     <div className="relative">
       <Image
         src={artist?.profilePic || "https://placehold.co/40x40"}
         alt={artist?.name || "Artista"}
-        width={50}
-        height={50}
+        width={imgSize}
+        height={imgSize}
         unoptimized
         className="rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition-all duration-300"
       />
     </div>
     <span
-      className={`uppercase font-semibold text-lg tracking-wide transition-colors duration-300 ${
+      className={`uppercase font-semibold text-lg tracking-wide transition-colors duration-300 truncate ${
         isOnTop ? "text-white" : "text-gray-800 dark:text-gray-200"
       }`}
     >

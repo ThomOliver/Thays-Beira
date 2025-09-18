@@ -2,62 +2,20 @@
 
 import { useUIStore } from "@/store/useUIStore";
 import { useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { Sun, Moon, Instagram, Facebook, Twitter, Linkedin, Music2 } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import { Instagram, Facebook, Twitter, Linkedin, Music2 } from "lucide-react";
 import { useArtistStore } from "@/store/artistStore";
 import { getArtistBySlug } from "@/services/artistService";
-import Image from "next/image";
 import React from "react";
-
-const MenuItems = React.memo(
-  ({ items, onClick }: { items: { label: string; href: string }[]; onClick: (href: string) => void }) => (
-    <nav className="flex flex-col space-y-4 mt-6 px-4">
-      {items.map((item) => (
-        <button
-          key={item.href}
-          onClick={() => onClick(item.href)}
-          className="text-left hover:text-primary transition-colors"
-          aria-label={`Ir para ${item.label}`}
-        >
-          {item.label}
-        </button>
-      ))}
-    </nav>
-  )
-);
-MenuItems.displayName = "MenuItems";
-
-type SocialLink = {
-  icon: React.ComponentType<{ className?: string }>;
-  url?: string | null;
-  label: string;
-};
-
-const SocialLinks = React.memo(({ socialLinks }: { socialLinks: SocialLink[] }) => (
-  <div className="flex items-center justify-start gap-3">
-    {socialLinks.map(
-      (social, i) =>
-        social.url && (
-          <a
-            key={i}
-            href={social.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={social.label}
-            aria-label={social.label}
-          >
-            <social.icon className="w-5 h-5 hover:text-primary transition-colors" />
-          </a>
-        )
-    )}
-  </div>
-));
-SocialLinks.displayName = "SocialLinks";
-
+import ArtistLogo from "./ArtistLogo";
+import ThemeToggle from "./ThemeToggle";
+import SocialLinks from "./SocialLinks";
+import NavMenu from "./NavMenu";
 function SidebarComponent() {
   const { isMenuOpen, isDark, toggleMenu, toggleTheme, initializeTheme, collapsed } = useUIStore();
   const { artist, setArtist, setLoading, setError, slug } = useArtistStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     initializeTheme();
@@ -69,7 +27,7 @@ function SidebarComponent() {
         .catch(() => setError("Não foi possível carregar os dados do artista."))
         .finally(() => setLoading(false));
     }
-  }, [initializeTheme, artist, setArtist, setLoading, setError]);
+  }, [initializeTheme, artist, setArtist, setLoading, setError, slug]);
 
   const handleLinkClick = (href: string) => {
     if (typeof window !== "undefined" && window.innerWidth < 768) toggleMenu();
@@ -82,6 +40,7 @@ function SidebarComponent() {
       { label: "Obras", href: "/artwork" },
       { label: "Exposições", href: "/exhibition" },
       { label: "Contato", href: "/contact" },
+      { label: "Loja", href: "/store" },
     ],
     []
   );
@@ -106,31 +65,29 @@ function SidebarComponent() {
 
       <div className="flex items-center justify-between px-4 h-16 border-b border-gray-300 dark:border-gray-700">
         {!collapsed && (
-          <div className="flex items-center gap-3">
-            <Image
-              src={artist?.profilePic || "https://placehold.co/40x40"}
-              alt={artist?.name || "Artista"}
-              width={40}
-              height={40}
-              priority
-              className="rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition-all duration-300"
-            />
-            <span className="text-lg font-bold truncate">{artist?.name || "Carregando..."}</span>
-          </div>
+          <ArtistLogo
+            artist={artist}
+            isOnTop={false}
+            className="text-lg font-bold"
+            imgSize={40} 
+          />
         )}
       </div>
 
-      <MenuItems items={menuItems} onClick={handleLinkClick} />
+      <NavMenu
+        navItems={menuItems}
+        pathname={pathname}
+        handleLinkClick={handleLinkClick}
+        isOnTop={false}
+      />
 
       <div className="absolute bottom-4 left-0 w-full px-4 flex flex-col gap-4">
-        {!collapsed && <SocialLinks socialLinks={socialLinks} />}
-        <button
-          onClick={toggleTheme}
-          aria-label="Alternar tema claro/escuro"
-          className="self-start"
-        >
-          {isDark ? <Sun className="h-6 w-6 text-yellow-400" /> : <Moon className="h-6 w-6" />}
-        </button>
+        {!collapsed && <SocialLinks links={socialLinks} />}
+        <ThemeToggle
+          isDark={isDark}
+          isOnTop={false} 
+          toggleTheme={toggleTheme}
+        />
       </div>
     </aside>
   );

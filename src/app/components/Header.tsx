@@ -14,12 +14,11 @@ import ArtistLogo from "./ArtistLogo";
 import ThemeToggle from "./ThemeToggle";
 import CartButton from "./CartButton";
 import MobileMenuButton from "./MobileMenuButton";
+import SocialLinks from "./SocialLinks";
+import { mapArtistToSocialLinks } from "@/utils/socialMapper";
 
 const NavMenu = dynamic(() =>
   import("@/app/components/NavMenu").then((mod) => mod.default)
-);
-const SocialIcons = dynamic(() =>
-  import("@/app/components/SocialIcons").then((mod) => mod.default)
 );
 
 interface HeaderProps {
@@ -116,7 +115,14 @@ const HeaderComponent: React.FC<HeaderProps> = ({ navItems, showCart }) => {
         </div>
 
         <div className="flex items-center space-x-4">
-          {!showCart && <SocialIcons artist={artist} isOnTop={isOnTop} />}
+          {!showCart && (
+            <SocialLinks
+              links={mapArtistToSocialLinks(artist)}
+              isOnTop={isOnTop}
+              showSeparator
+              className="hidden md:flex items-center space-x-4"
+            />
+          )}
 
           <ThemeToggle isDark={isDark} isOnTop={isOnTop} toggleTheme={toggleTheme} />
 

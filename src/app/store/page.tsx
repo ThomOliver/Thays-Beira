@@ -8,6 +8,7 @@ import { useArtworkStore } from "@/store/artworkStore";
 import ArtModal from "../components/store/ArtModal";
 import ArtworkCard from "../components/store/ArtworkCard";
 import CategoryFilter from "../components/store/CategoryFilter";
+import ArtworkLoader from "../components/ArtworkLoader";
 
 const ArtistStorePage = () => {
   const { artist, slug, setArtist, setLoading, loading, setError } =
@@ -33,11 +34,7 @@ const ArtistStorePage = () => {
   }, [slug, setArtist, setLoading, setError]);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-2xl animate-pulse">Carregando loja...</p>
-      </div>
-    );
+    return <ArtworkLoader message="Carregando loja..." />;
   }
 
   if (!artist) {

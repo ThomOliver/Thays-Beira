@@ -8,6 +8,7 @@ interface CategoryFilterProps {
   artworks: Artwork[];
   selectedCategory: string;
   onSelectCategory: (id: string) => void;
+  showAllCategories?: boolean;
 }
 
 const CategoryFilter: React.FC<CategoryFilterProps> = ({
@@ -15,15 +16,16 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   artworks,
   selectedCategory,
   onSelectCategory,
+  showAllCategories = false,
 }) => {
-
-  const availableCategories = categories.filter((category) =>
-    artworks.some((art) => art.categoryId === category.id && art.toSell)
-  );
+  const availableCategories = showAllCategories
+    ? categories
+    : categories.filter((category) =>
+        artworks.some((art) => art.categoryId === category.id && art.toSell)
+      );
 
   return (
     <div className="flex gap-3 mb-8 flex-wrap mt-16">
-
       <button
         onClick={() => onSelectCategory("all")}
         className={`px-4 py-2 rounded-lg ${
