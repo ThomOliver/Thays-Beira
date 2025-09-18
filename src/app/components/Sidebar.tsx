@@ -79,7 +79,9 @@ function SidebarComponent() {
         pathname={pathname}
         handleLinkClick={handleLinkClick}
         isOnTop={false}
+        className="flex flex-col gap-4 mt-4 px-4"
       />
+
 
       <div className="absolute bottom-4 left-0 w-full px-4 flex flex-col gap-4">
         {!collapsed && <SocialLinks links={socialLinks} />}
