@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useArtistStore } from "@/store/artistStore";
 import { getArtistBySlug } from "@/services/artistService";
+import ArtworkLoader from "./ArtworkLoader";
 
 const ArtistPortfolioPage = () => {
   const { artist, setArtist, setLoading, loading, setError, slug } = useArtistStore();
@@ -22,11 +23,7 @@ const ArtistPortfolioPage = () => {
   }, [slug, setArtist, setLoading, setError]);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-2xl animate-pulse">Carregando...</p>
-      </div>
-    );
+    return <ArtworkLoader />;
   }
 
   if (!artist) {

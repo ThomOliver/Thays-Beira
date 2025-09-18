@@ -1,5 +1,3 @@
-// types/index.ts
-
 export interface Artwork {
   id: string;
   title: string;
@@ -17,6 +15,10 @@ export interface Artwork {
   isPrint: boolean;
   pricePrint: number | null;
   amountPrint: number | null;
+  ano: string | null;
+  material: string | null;
+  metric: string | null;
+  pricePrint: number | null;
 }
 
 export interface Exhibition {

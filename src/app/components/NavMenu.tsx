@@ -10,6 +10,7 @@ interface NavMenuProps {
   pathname: string;
   handleLinkClick: (href: string) => void;
   isOnTop: boolean;
+  className?: string;
 }
 
 const NavMenu: React.FC<NavMenuProps> = ({
@@ -17,8 +18,9 @@ const NavMenu: React.FC<NavMenuProps> = ({
   pathname,
   handleLinkClick,
   isOnTop,
+  className = "hidden md:flex items-center gap-4", 
 }) => (
-  <nav className="hidden md:flex items-center gap-4">
+  <nav className={className}>
     {navItems.map((item, idx) => {
       const isActive = pathname === item.href;
       return (
@@ -43,9 +45,7 @@ const NavMenu: React.FC<NavMenuProps> = ({
           {idx < navItems.length - 1 && (
             <span
               className={`text-lg select-none pl-1 ${
-                isOnTop
-                  ? "text-white"
-                  : "text-gray-400 dark:text-gray-600"
+                isOnTop ? "text-white" : "text-gray-400 dark:text-gray-600"
               }`}
             >
               |
