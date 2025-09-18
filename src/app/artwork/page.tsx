@@ -13,15 +13,16 @@ const ArtistPortfolioPage = () => {
   const { artist, loading, error } = useArtistData(slug);
 
   const searchParams = useSearchParams();
-  const categoryFromUrl = searchParams.get("category");
 
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
+  // pega o param somente no cliente
   useEffect(() => {
-    if (categoryFromUrl) {
-      setSelectedCategory(categoryFromUrl);
+    if (typeof window !== "undefined") {
+      const categoryFromUrl = searchParams.get("category");
+      if (categoryFromUrl) setSelectedCategory(categoryFromUrl);
     }
-  }, [categoryFromUrl]);
+  }, [searchParams]);
 
   if (loading) return <PageState type="loading" message="Carregando..." />;
   if (error || !artist)
