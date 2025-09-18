@@ -21,7 +21,6 @@ interface SocialIconsProps {
   isOnTop: boolean;
 }
 
-// SocialIcons memoizado
 const SocialIcons: React.FC<SocialIconsProps> = ({ artist, isOnTop }) => (
   <div className="hidden md:flex items-center space-x-4">
     {artist?.instagram && (

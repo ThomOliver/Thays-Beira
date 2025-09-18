@@ -72,19 +72,18 @@ export default function ObraPage() {
       </div>
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-        {/* Imagem convertida para Next/Image */}
-<div className="w-full">
-  <Image
-    src={artwork.imageUrl}
-    alt={artwork.title}
-    width={800}
-    height={600}
-    className="rounded-lg object-cover shadow-lg w-full h-auto"
-    priority
-  />
-</div>
+   
+        <div className="w-full">
+          <Image
+            src={artwork.imageUrl}
+            alt={artwork.title}
+            width={800}
+            height={600}
+            className="rounded-lg object-cover shadow-lg w-full h-auto"
+            priority
+          />
+        </div>
 
-        {/* Informações */}
         <div className="flex flex-col justify-center">
           <h1 className="text-4xl font-bold">{artwork.title}</h1>
           {artwork.description && (

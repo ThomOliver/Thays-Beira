@@ -1,5 +1,3 @@
-// types/index.ts
-
 export interface Artwork {
   id: string;
   title: string;

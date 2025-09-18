@@ -10,13 +10,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const { cepDestino } = req.body;
 
-    const cepOrigem = "82310310"; // CEP da loja
-    const peso = "1"; // em Kg
-    const comprimento = "20"; // cm
-    const altura = "10"; // cm
-    const largura = "15"; // cm
-    const diametro = "0"; // cm
-    const codigoServico = "04510"; // PAC
+    const cepOrigem = "82310310";
+    const peso = "1";
+    const comprimento = "20";
+    const altura = "10";
+    const largura = "15";
+    const diametro = "0"; 
+    const codigoServico = "04510"; 
 
     const url = `https://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?` +
       `nCdEmpresa=&sDsSenha=&sCepOrigem=${cepOrigem}&sCepDestino=${cepDestino}` +
@@ -29,7 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const parser = new XMLParser();
     const json = parser.parse(response.data);
 
-    // O XML retorna em Servicos > cServico
     const servico = json.Servicos?.cServico;
     const valor = servico?.Valor || null;
     const prazo = servico?.PrazoEntrega || null;

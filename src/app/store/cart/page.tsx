@@ -88,7 +88,6 @@ const CartPage = () => {
         ))}
       </div>
 
-      {/* Calcular Frete */}
       <div className="mt-6">
         <label className="block mb-2">Calcular frete:</label>
         <div className="flex gap-2">

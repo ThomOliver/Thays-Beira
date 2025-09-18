@@ -25,7 +25,7 @@ export const useCartStore = create<CartStore>()(
       addToCart: (item) =>
         set((state) => {
           const existing = state.items.find((i) => i.id === item.id);
-          const qty = Math.max(item.quantity ?? 1, 1); // nunca menor que 1
+          const qty = Math.max(item.quantity ?? 1, 1);
 
           if (existing) {
             return {

@@ -69,7 +69,6 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
         </div>
       </div>
 
-      {/* Swiper só após mount */}
       {mounted && artworks.length > 1 && (
         <Swiper
           modules={[Autoplay]}

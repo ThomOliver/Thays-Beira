@@ -58,7 +58,7 @@ export default function CategoriaPage() {
 
   return (
     <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text p-20">
-      {/* Cabeçalho */}
+   
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
         <h1 className="text-4xl font-extrabold">{categoryName}</h1>
         <button
@@ -69,7 +69,6 @@ export default function CategoriaPage() {
         </button>
       </div>
 
-      {/* Lista de obras */}
       {artworks.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {artworks.map((art) => (
@@ -98,7 +97,6 @@ export default function CategoriaPage() {
         </p>
       )}
 
-      {/* Link para voltar ao portfólio */}
       <div className="mt-12 text-center">
         <Link
           href={`/artwork`}

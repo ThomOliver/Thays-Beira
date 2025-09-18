@@ -9,7 +9,6 @@ import { getArtistBySlug } from "@/services/artistService";
 import Image from "next/image";
 import React from "react";
 
-// Menu memoizado
 const MenuItems = React.memo(
   ({ items, onClick }: { items: { label: string; href: string }[]; onClick: (href: string) => void }) => (
     <nav className="flex flex-col space-y-4 mt-6 px-4">
@@ -28,7 +27,6 @@ const MenuItems = React.memo(
 );
 MenuItems.displayName = "MenuItems";
 
-// Redes sociais memoizadas (usando os mesmos ícones do Header)
 type SocialLink = {
   icon: React.ComponentType<{ className?: string }>;
   url?: string | null;
@@ -105,7 +103,7 @@ function SidebarComponent() {
         ${collapsed ? "w-20" : "w-64"} 
         ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
-      {/* Cabeçalho */}
+
       <div className="flex items-center justify-between px-4 h-16 border-b border-gray-300 dark:border-gray-700">
         {!collapsed && (
           <div className="flex items-center gap-3">
@@ -115,7 +113,6 @@ function SidebarComponent() {
               width={40}
               height={40}
               priority
-              unoptimized
               className="rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition-all duration-300"
             />
             <span className="text-lg font-bold truncate">{artist?.name || "Carregando..."}</span>
@@ -123,10 +120,8 @@ function SidebarComponent() {
         )}
       </div>
 
-      {/* Menu */}
       <MenuItems items={menuItems} onClick={handleLinkClick} />
 
-      {/* Redes sociais e tema */}
       <div className="absolute bottom-4 left-0 w-full px-4 flex flex-col gap-4">
         {!collapsed && <SocialLinks socialLinks={socialLinks} />}
         <button
