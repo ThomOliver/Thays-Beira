@@ -1,45 +1,60 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { getArtistBySlug } from "@/services/artistService";
-import { Artwork } from "@/types";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useArtistStore } from "@/store/artistStore";
-import ArtworkDetails from "@/app/components/ArtworkDetails";
-import ArtworkLoader from "@/app/components/ArtworkLoader";
-import ArtworkNotFound from "@/app/components/ArtworkNotFound";
+import { useArtistData } from "@/hooks/useArtistData";
+import { PageState } from "@/app/components/PageStateProps";
+import ArtworkCategory from "@/app/components/ArtworkCategory";
+import CategoryFilter from "@/app/components/store/CategoryFilter";
 
-export default function ObraPage() {
-  const { artworkId } = useParams();
-  const { slug, setLoading, setError } = useArtistStore();
-  const [artwork, setArtwork] = useState<Artwork | null>(null);
-  const [loading, setLoadingLocal] = useState(true);
+function PortfolioContent() {
+  const { slug } = useArtistStore();
+  const { artist, loading, error } = useArtistData(slug);
+
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get("category");
+
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   useEffect(() => {
-    if (!slug || !artworkId) return;
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+    }
+  }, [categoryFromUrl]);
 
-    const fetchArtwork = async () => {
-      try {
-        setLoading(true);
-        const data = await getArtistBySlug(slug);
-        const found = (data.artworks as Artwork[]).find(
-          (art) => art.id === artworkId
-        );
-        setArtwork(found || null);
-      } catch (error) {
-        console.error("Erro ao carregar obra:", error);
-        setError?.("Não foi possível carregar a obra.");
-      } finally {
-        setLoading(false);
-        setLoadingLocal(false);
-      }
-    };
+  if (loading) return <PageState type="loading" message="Carregando..." />;
+  if (error || !artist)
+    return <PageState type="error" message="Artista não encontrado." />;
 
-    fetchArtwork();
-  }, [slug, artworkId, setLoading, setError]);
+  return (
+    <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text p-6">
+      {artist.categories && artist.artworks && (
+        <>
+          <CategoryFilter
+            categories={artist.categories}
+            artworks={artist.artworks}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            showAllCategories={true}
+          />
 
-  if (loading) return <ArtworkLoader message="Carregando loja..." />;
-  if (!artwork) return <ArtworkNotFound />;
+          <ArtworkCategory
+            categories={artist.categories}
+            artworks={artist.artworks}
+            artistSlug={slug}
+            selectedCategory={selectedCategory}
+          />
+        </>
+      )}
+    </div>
+  );
+}
 
-  return <ArtworkDetails artwork={artwork} />;
+export default function ArtistPortfolioPage() {
+  return (
+    <Suspense fallback={<PageState type="loading" message="Carregando página..." />}>
+      <PortfolioContent />
+    </Suspense>
+  );
 }
