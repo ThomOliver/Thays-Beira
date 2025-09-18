@@ -1,4 +1,4 @@
-import { Artist, PublicSlug } from "@/types";
+import { Artist } from "@/types";
 
 export const getArtistBySlug = async (slug: string): Promise<Artist> => {
   const response = await fetch(

@@ -23,7 +23,7 @@ const ArtistPortfolioPage = () => {
   }, [slug, setArtist, setLoading, setError]);
 
   if (loading) {
-    return <ArtworkLoader message="Carregando..." />;
+    return <ArtworkLoader />;
   }
 
   if (!artist) {

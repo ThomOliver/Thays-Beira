@@ -1,17 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Artist } from "@/types"; // <-- importa o tipo
+
+interface ArtistLogoProps {
+  artist: Artist | null;
+  isOnTop: boolean;
+  className?: string;
+  imgSize?: number;
+}
 
 const ArtistLogo = ({
   artist,
   isOnTop,
   className = "",
   imgSize = 50,
-}: {
-  artist: any;
-  isOnTop: boolean;
-  className?: string;
-  imgSize?: number;
-}) => (
+}: ArtistLogoProps) => (
   <Link
     href="/"
     className={`flex items-center gap-3 cursor-pointer group ${className}`}

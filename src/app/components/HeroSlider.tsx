@@ -17,12 +17,8 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
 
   useEffect(() => setMounted(true), []);
 
-  if (!artworks || artworks.length === 0) return null;
-
-  const firstArt = artworks[0];
-
   const slides = useMemo(() => {
-    if (artworks.length <= 1) return [];
+    if (!artworks || artworks.length <= 1) return [];
     return artworks.slice(1).map((art) => (
       <SwiperSlide key={art.id}>
         <HeroSlideImage art={art} />
@@ -30,9 +26,12 @@ const HeroSlider = ({ artworks }: HeroSliderProps) => {
     ));
   }, [artworks]);
 
+  if (!artworks || artworks.length === 0) return null;
+
+  const firstArt = artworks[0];
+
   return (
     <>
-
       <HeroSlideImage art={firstArt} priority />
 
       {mounted && artworks.length > 1 && (

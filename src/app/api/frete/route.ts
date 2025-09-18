@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
+
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,21 +18,28 @@ export async function POST(req: NextRequest) {
     const cepOrigem = "82310310";
 
     const url =
-      "http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo" +
+      "https://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo" +
       `?nCdEmpresa=&sDsSenha=&nCdServico=04510&sCepOrigem=${cepOrigem}&sCepDestino=${cepLimpo}` +
       `&nVlPeso=1&nCdFormato=1&nVlComprimento=20&nVlAltura=10&nVlLargura=15&nVlDiametro=0` +
       `&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&StrRetorno=xml&nIndicaCalculo=3`;
 
-    const response = await axios.get(url, {
-      responseType: "text",
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
+    const response = await fetch(url, {
       headers: { "User-Agent": "Mozilla/5.0" },
-      timeout: 8000,
+      cache: "no-store",
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
+
+    const xml = await response.text();
 
     let json;
     try {
       const parser = new XMLParser({ ignoreAttributes: false });
-      json = parser.parse(response.data);
+      json = parser.parse(xml);
     } catch {
       return NextResponse.json({
         valor: "25.90",
@@ -63,7 +71,7 @@ export async function POST(req: NextRequest) {
     const prazo = servico.PrazoEntrega || null;
 
     return NextResponse.json({ valor, prazo });
-  } catch (error: any) {
+  } catch {
     return NextResponse.json({
       valor: "19.90",
       prazo: "8",
