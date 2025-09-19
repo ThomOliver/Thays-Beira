@@ -9,8 +9,13 @@ type SelectedArt = {
 interface ArtworkState {
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+
   selectedArt: SelectedArt;
   setSelectedArt: (art: SelectedArt) => void;
+
+  pendingArt: SelectedArt;
+  setPendingArt: (art: SelectedArt) => void;
+
   quantity: number;
   setQuantity: (qtd: number) => void;
 }
@@ -18,8 +23,13 @@ interface ArtworkState {
 export const useArtworkStore = create<ArtworkState>((set) => ({
   selectedCategory: "all",
   setSelectedCategory: (category) => set({ selectedCategory: category }),
+
   selectedArt: null,
   setSelectedArt: (art) => set({ selectedArt: art }),
+
+  pendingArt: null,
+  setPendingArt: (art) => set({ pendingArt: art }),
+
   quantity: 1,
   setQuantity: (qtd) => set({ quantity: qtd }),
 }));

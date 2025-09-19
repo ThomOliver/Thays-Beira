@@ -20,6 +20,8 @@ const ArtistStorePage = () => {
     selectedArt,
     setSelectedArt,
     setQuantity,
+    pendingArt,
+    setPendingArt,
   } = useArtworkStore();
 
   const addToCart = useCartStore((state) => state.addToCart);
@@ -32,6 +34,15 @@ const ArtistStorePage = () => {
       .catch(() => setError("Não foi possível carregar os dados do artista."))
       .finally(() => setLoading(false));
   }, [slug, setArtist, setLoading, setError]);
+
+  // 🚀 Se vier de outra página com pendingArt, abre a modal automaticamente
+  useEffect(() => {
+    if (pendingArt) {
+      setSelectedArt(pendingArt);
+      setQuantity(1);
+      setPendingArt(null);
+    }
+  }, [pendingArt, setSelectedArt, setQuantity, setPendingArt]);
 
   if (loading) {
     return <ArtworkLoader message="Carregando loja..." />;
