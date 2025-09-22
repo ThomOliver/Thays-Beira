@@ -29,7 +29,7 @@ const ArtistPortfolioPage = () => {
   if (error || !artist) return <PageState type="error" message="Artista não encontrado." />;
 
   return (
-    <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text">
+    <div className="min-h-screen text-text dark:text-text">
      
       <HeroSlider artworks={artist.artworks || []} />
 
