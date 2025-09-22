@@ -26,6 +26,8 @@ export interface Exhibition {
   title: string;
   date: string;
   location: string;
+  imageUrl: string | null;
+  description: string | null;
 }
 
 export interface Category {

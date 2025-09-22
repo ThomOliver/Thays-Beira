@@ -28,7 +28,7 @@ const ArtistPortfolioContent = () => {
     return <PageState type="error" message="Artista não encontrado." />;
 
   return (
-    <div className="min-h-screen bg-bg dark:bg-bg text-text dark:text-text p-6">
+    <main className="min-h-screen text-text dark:text-text p-6">
       {artist.categories && artist.artworks && (
         <>
           <CategoryFilter
@@ -47,7 +47,7 @@ const ArtistPortfolioContent = () => {
           />
         </>
       )}
-    </div>
+    </main>
   );
 };
 
