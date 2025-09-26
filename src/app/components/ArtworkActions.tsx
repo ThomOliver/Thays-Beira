@@ -3,10 +3,12 @@
 import { Artwork } from "@/types";
 import { useArtworkStore } from "@/store/artworkStore";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export default function ArtworkActions({ artwork }: { artwork: Artwork }) {
   const { setPendingArt, setQuantity } = useArtworkStore();
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   const handleClick = (type: "original" | "print") => {
     setPendingArt({ art: artwork, type });
@@ -21,7 +23,7 @@ export default function ArtworkActions({ artwork }: { artwork: Artwork }) {
           onClick={() => handleClick("original")}
           className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
         >
-          Comprar
+          {t("Buy")}
         </button>
       )}
       {artwork.isPrint && (
@@ -29,7 +31,7 @@ export default function ArtworkActions({ artwork }: { artwork: Artwork }) {
           onClick={() => handleClick("print")}
           className="px-6 py-2 border rounded-lg hover:bg-gray-100"
         >
-          Adquirir Print
+          {t("PurchasePrint")}
         </button>
       )}
     </div>

@@ -3,6 +3,8 @@
 import { Category, Artwork } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { getFieldByLang } from "@/utils/i18n";
+import { useTranslation } from "react-i18next";
 
 interface CategoryCardProps {
   category: Category;
@@ -10,6 +12,8 @@ interface CategoryCardProps {
 }
 
 export const CategoryCard = ({ category, artwork }: CategoryCardProps) => {
+  const { i18n } = useTranslation();
+
   return (
     <Link href={`/artwork?category=${encodeURIComponent(category.id)}`}>
       <div className="relative rounded-lg overflow-hidden shadow-lg group cursor-pointer">
@@ -18,7 +22,7 @@ export const CategoryCard = ({ category, artwork }: CategoryCardProps) => {
             <div className="relative w-full h-80">
               <Image
                 src={artwork.imageUrl}
-                alt={artwork.title}
+                alt={getFieldByLang(artwork, "title", i18n.language)}
                 fill
                 loading="lazy"
                 placeholder="blur"
@@ -28,13 +32,19 @@ export const CategoryCard = ({ category, artwork }: CategoryCardProps) => {
               />
             </div>
             <div className="absolute bottom-0 w-full bg-black bg-opacity-50 text-white p-4">
-              <h3 className="text-xl font-semibold">{category.name}</h3>
-              <p className="text-sm opacity-90">{artwork.title}</p>
+              <h3 className="text-xl font-semibold">
+                {getFieldByLang(category, "name", i18n.language)}
+              </h3>
+              <p className="text-sm opacity-90">
+                {getFieldByLang(artwork, "title", i18n.language)}
+              </p>
             </div>
           </>
         ) : (
           <div className="w-full h-80 flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-            <h3 className="text-xl font-semibold">{category.name}</h3>
+            <h3 className="text-xl font-semibold">
+              {getFieldByLang(category, "name", i18n.language)}
+            </h3>
           </div>
         )}
       </div>

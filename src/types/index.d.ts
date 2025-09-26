@@ -1,8 +1,14 @@
 export interface Artwork {
   id: string;
   title: string;
+  titleEn: string | null;
+  titleEs: string | null;
+  titleCn: string | null;
   imageUrl: string;
   description: string | null;
+  descriptionEn: string | null;
+  descriptionEs: string | null;
+  descriptionCn: string | null;
   categoryId: string;
   position: number;
   isHighlighted: boolean;
@@ -32,14 +38,20 @@ export interface Exhibition {
 
 export interface Category {
   id: string;
-  name: string;
-  position: number;
+  slug: string;
+  namePt: string;
+  nameEn: string;
+  nameEs: string;
+  nameCn: string;
 }
 
 export interface Artist {
   id: string;
   name: string;
   bio: string;
+  bioEn: string;
+  bioEs: string;
+  bioCn: string;
   instagram: string;
   facebook: string;
   tiktok: string;

@@ -2,6 +2,8 @@
 
 import React from "react";
 import { Category, Artwork } from "@/types";
+import { getFieldByLang } from "@/utils/i18n";
+import { useTranslation } from "react-i18next";
 
 interface CategoryFilterProps {
   categories: Category[];
@@ -18,6 +20,8 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   onSelectCategory,
   showAllCategories = false,
 }) => {
+  const { i18n, t } = useTranslation();
+
   const availableCategories = showAllCategories
     ? categories
     : categories.filter((category) =>
@@ -34,7 +38,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             : "bg-gray-200 dark:bg-gray-700"
         }`}
       >
-        Todas
+        {t('All')}
       </button>
 
       {availableCategories.map((category) => (
@@ -47,7 +51,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
               : "bg-gray-200 dark:bg-gray-700"
           }`}
         >
-          {category.name}
+          {getFieldByLang(category, "name", i18n.language)}
         </button>
       ))}
     </div>
