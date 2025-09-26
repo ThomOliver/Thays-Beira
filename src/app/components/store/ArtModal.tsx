@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { Artwork } from "@/types";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { getFieldByLang } from "@/utils/i18n";
 
 type Props = {
   selectedArt: { art: Artwork; type: "original" | "print" } | null;
@@ -16,6 +18,7 @@ type Props = {
 };
 
 export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
+  const { i18n, t } = useTranslation("common");
   const [quantity, setQuantity] = useState(1);
 
   if (!selectedArt) return null;
@@ -38,6 +41,8 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
     else setQuantity(value);
   };
 
+  const translatedTitle = getFieldByLang(selectedArt.art, "title", i18n.language);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
@@ -47,7 +52,6 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
         className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-lg w-full shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-red-500 transition"
@@ -57,16 +61,16 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
 
         <Image
           src={selectedArt.art.imageUrl}
-          alt={selectedArt.art.title}
+          alt={translatedTitle}
           width={500}
           height={400}
           className="w-full max-h-[400px] object-contain rounded-lg mb-4 bg-gray-100"
         />
 
         <h2 className="text-2xl font-bold mb-1">
-          {selectedArt.art.title}{" "}
+          {translatedTitle}{" "}
           {selectedArt.type === "print" && (
-            <span className="text-sm text-blue-600">(Print)</span>
+            <span className="text-sm text-blue-600">({t("Print")})</span>
           )}
         </h2>
 
@@ -75,17 +79,15 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
             ? `R$ ${selectedArt.art.pricePrint?.toFixed(2)}`
             : selectedArt.art.price
             ? `R$ ${selectedArt.art.price.toFixed(2)}`
-            : "Sob consulta"}
+            : t("OnRequest")}
         </p>
 
         {!isAvailable ? (
-          <p className="text-red-500 font-medium mt-4">
-            Produto indisponível.
-          </p>
+          <p className="text-red-500 font-medium mt-4">{t("Unavailable")}</p>
         ) : (
           <>
             <div className="flex items-center gap-3 mb-6">
-              <span className="font-medium">Quantidade:</span>
+              <span className="font-medium">{t("Quantity")}:</span>
               <div className="flex items-center border rounded-lg overflow-hidden">
                 <button
                   onClick={() => handleQuantityChange(quantity - 1)}
@@ -99,9 +101,7 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
                   min={1}
                   max={max}
                   value={quantity}
-                  onChange={(e) =>
-                    handleQuantityChange(Number(e.target.value))
-                  }
+                  onChange={(e) => handleQuantityChange(Number(e.target.value))}
                   className="w-16 text-center border-l border-r dark:bg-gray-800"
                 />
                 <button
@@ -111,7 +111,9 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
                   +
                 </button>
               </div>
-              <span className="text-sm text-gray-500">Máx: {max}</span>
+              <span className="text-sm text-gray-500">
+                {t("Max")}: {max}
+              </span>
             </div>
 
             <div className="flex justify-between items-center">
@@ -119,7 +121,7 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
                 onClick={onClose}
                 className="px-5 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
-                Cancelar
+                {t("Cancel")}
               </button>
               <button
                 onClick={() => {
@@ -129,8 +131,8 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
                         ? selectedArt.art.id + "-print"
                         : selectedArt.art.id,
                     title:
-                      selectedArt.art.title +
-                      (selectedArt.type === "print" ? " (Print)" : ""),
+                      translatedTitle +
+                      (selectedArt.type === "print" ? ` (${t("Print")})` : ""),
                     imageUrl: selectedArt.art.imageUrl,
                     price:
                       selectedArt.type === "print"
@@ -141,7 +143,7 @@ export default function ArtModal({ selectedArt, onClose, onAddToCart }: Props) {
                 }}
                 className="px-6 py-2 bg-primary text-white rounded-lg hover:opacity-90 shadow-md"
               >
-                Adicionar
+                {t("AddToCart")}
               </button>
             </div>
           </>

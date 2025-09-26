@@ -17,6 +17,9 @@ import MobileMenuButton from "./MobileMenuButton";
 import SocialLinks from "./SocialLinks";
 import { mapArtistToSocialLinks } from "@/utils/socialMapper";
 
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n/client";
+
 const NavMenu = dynamic(() =>
   import("@/app/components/NavMenu").then((mod) => mod.default)
 );
@@ -33,22 +36,28 @@ const HeaderComponent: React.FC<HeaderProps> = ({ navItems, showCart }) => {
   const { artist, setArtist, setLoading, setError, slug } = useArtistStore();
   const { items } = useCartStore();
   const [isOnTop, setIsOnTop] = useState(true);
+  const { t } = useTranslation("common");
+
   useSyncTheme();
 
   const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
   const defaultNavItems = useMemo(
     () =>
       artist
         ? [
-            { label: "Sobre", href: "/about" },
-            { label: "Obras", href: "/artwork" },
-            { label: "Exposições", href: "/exhibition" },
-            { label: "Contato", href: "/contact" },
-            { label: "Loja", href: "/store" },
+            { label: t("About"), href: "/about" },
+            { label: t("Artworks"), href: "/artwork" },
+            { label: t("Exhibitions"), href: "/exhibition" },
+            { label: t("Contact"), href: "/contact" },
+            { label: t("Store"), href: "/store" },
           ]
         : [],
-    [artist]
+    [artist, t]
   );
 
   const finalNavItems = navItems ?? defaultNavItems;
@@ -109,12 +118,41 @@ const HeaderComponent: React.FC<HeaderProps> = ({ navItems, showCart }) => {
       }`}
     >
       <div className="max-w-[1900px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+
         <div className="flex items-center gap-8">
           <ArtistLogo artist={artist} isOnTop={isOnTop} />
           {renderedNavMenu}
         </div>
 
         <div className="flex items-center space-x-4">
+
+          <div className="hidden md:flex items-center gap-2">
+            <button
+              className="px-2 py-1 bg-blue-500 text-white rounded hover:opacity-80 transition"
+              onClick={() => changeLanguage("pt")}
+            >
+              PT
+            </button>
+            <button
+              className="px-2 py-1 bg-green-500 text-white rounded hover:opacity-80 transition"
+              onClick={() => changeLanguage("en")}
+            >
+              EN
+            </button>
+            <button
+              className="px-2 py-1 bg-yellow-500 text-white rounded hover:opacity-80 transition"
+              onClick={() => changeLanguage("es")}
+            >
+              ES
+            </button>
+            <button
+              className="px-2 py-1 bg-red-500 text-white rounded hover:opacity-80 transition"
+              onClick={() => changeLanguage("cn")}
+            >
+              CN
+            </button>
+          </div>
+
           {!showCart && (
             <SocialLinks
               links={mapArtistToSocialLinks(artist)}
@@ -136,6 +174,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({ navItems, showCart }) => {
     </header>
   );
 };
+
 HeaderComponent.displayName = "HeaderComponent";
 
 export default React.memo(HeaderComponent);

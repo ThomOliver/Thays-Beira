@@ -9,21 +9,12 @@ import ArtModal from "../components/store/ArtModal";
 import ArtworkCard from "../components/store/ArtworkCard";
 import CategoryFilter from "../components/store/CategoryFilter";
 import ArtworkLoader from "../components/ArtworkLoader";
+import { useTranslation } from "react-i18next";
 
 const ArtistStorePage = () => {
-  const { artist, slug, setArtist, setLoading, loading, setError } =
-    useArtistStore();
-
-  const {
-    selectedCategory,
-    setSelectedCategory,
-    selectedArt,
-    setSelectedArt,
-    setQuantity,
-    pendingArt,
-    setPendingArt,
-  } = useArtworkStore();
-
+  const { t } = useTranslation("common");
+  const { artist, slug, setArtist, setLoading, loading, setError } = useArtistStore();
+  const { selectedCategory, setSelectedCategory, selectedArt, setSelectedArt, setQuantity, pendingArt, setPendingArt } = useArtworkStore();
   const addToCart = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
@@ -35,7 +26,6 @@ const ArtistStorePage = () => {
       .finally(() => setLoading(false));
   }, [slug, setArtist, setLoading, setError]);
 
-  // 🚀 Se vier de outra página com pendingArt, abre a modal automaticamente
   useEffect(() => {
     if (pendingArt) {
       setSelectedArt(pendingArt);
@@ -44,24 +34,18 @@ const ArtistStorePage = () => {
     }
   }, [pendingArt, setSelectedArt, setQuantity, setPendingArt]);
 
-  if (loading) {
-    return <ArtworkLoader message="Carregando loja..." />;
-  }
-
-  if (!artist) {
+  if (loading) return <ArtworkLoader message={t("Loading")} />;
+  if (!artist)
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-2xl text-red-500">Artista não encontrado.</p>
+        <p className="text-2xl text-red-500">{t("ArtistNotFound")}</p>
       </div>
     );
-  }
 
   const filteredArtworks =
     selectedCategory === "all"
       ? artist.artworks.filter((art) => art.toSell)
-      : artist.artworks.filter(
-          (art) => art.categoryId === selectedCategory && art.toSell
-        );
+      : artist.artworks.filter((art) => art.categoryId === selectedCategory && art.toSell);
 
   return (
     <section className="p-6 min-h-screen bg-bg text-text">
@@ -76,16 +60,14 @@ const ArtistStorePage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {filteredArtworks.flatMap((art) => {
             const items = [];
-            const categoryName = artist.categories.find(
-              (c) => c.id === art.categoryId
-            )?.name;
+            const category = artist.categories.find((c) => c.id === art.categoryId);
 
             items.push(
               <ArtworkCard
                 key={art.id + "-original"}
                 art={art}
                 type="original"
-                categoryName={categoryName}
+                category={category}
                 onSelect={() => {
                   setSelectedArt({ art, type: "original" });
                   setQuantity(1);
@@ -99,7 +81,7 @@ const ArtistStorePage = () => {
                   key={art.id + "-print"}
                   art={art}
                   type="print"
-                  categoryName={categoryName}
+                  category={category}
                   onSelect={() => {
                     setSelectedArt({ art, type: "print" });
                     setQuantity(1);
@@ -112,7 +94,7 @@ const ArtistStorePage = () => {
           })}
         </div>
       ) : (
-        <p>Nenhuma obra encontrada nesta categoria.</p>
+        <p>{t("ArtistNotFound")}</p>
       )}
 
       {selectedArt && (

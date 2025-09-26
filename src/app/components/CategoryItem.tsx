@@ -2,6 +2,7 @@
 
 import { Artwork, Category } from "@/types";
 import { CategoryCard } from "./CategoryCard";
+import { useTranslation } from "react-i18next";
 
 
 interface CategoryItensProps {
@@ -11,9 +12,10 @@ interface CategoryItensProps {
 }
 
  const CategoryItens = ({ categories, artworks }: CategoryItensProps) => {
+  const { t } = useTranslation("common");
   return (
     <section className="p-6">
-      <h2 className="text-3xl font-bold mb-4">Categorias</h2>
+      <h2 className="text-3xl font-bold mb-4">{t("Categories")}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {categories.map((category) => {
           const artwork = artworks.find(

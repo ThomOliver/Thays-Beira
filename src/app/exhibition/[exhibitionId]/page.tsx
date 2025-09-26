@@ -8,8 +8,10 @@ import { useArtistStore } from "@/store/artistStore";
 import ExhibitionDetails from "@/app/components/ExhibitionDetails";
 import ArtworkLoader from "@/app/components/ArtworkLoader";
 import ArtworkNotFound from "@/app/components/ArtworkNotFound";
+import { useTranslation } from "react-i18next";
 
 export default function ExhibitionPage() {
+  const { t } = useTranslation("common");
   const { exhibitionId } = useParams();
   const { slug, setLoading, setError } = useArtistStore();
   const [exhibition, setExhibition] = useState<Exhibition | null>(null);
@@ -39,7 +41,7 @@ export default function ExhibitionPage() {
     fetchExhibition();
   }, [slug, exhibitionId, setLoading, setError]);
 
-  if (loading) return <ArtworkLoader message="Carregando exposição..." />;
+  if (loading) return <ArtworkLoader message={t("Loading")} />;
   if (!exhibition) return <ArtworkNotFound />;
 
   return <ExhibitionDetails exhibition={exhibition} />;

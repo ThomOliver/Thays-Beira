@@ -2,6 +2,8 @@
 
 import { Artwork, Category } from "@/types";
 import ArtworkGrid from "./ArtworkGrid";
+import { getFieldByLang } from "@/utils/i18n";
+import { useTranslation } from "react-i18next";
 
 interface CategoryItensProps {
   categories: Category[];
@@ -15,6 +17,9 @@ const ArtworkCategory = ({
   artworks,
   selectedCategory,
 }: CategoryItensProps) => {
+  const { i18n } = useTranslation(); 
+  const { t } = useTranslation("common");
+
   if (selectedCategory === "all") {
     return (
       <section className="space-y-12">
@@ -25,7 +30,7 @@ const ArtworkCategory = ({
           return (
             <ArtworkGrid
               key={category.id}
-              title={category.name}
+              title={getFieldByLang(category, "name", i18n.language)} 
               artworks={categoryArtworks}
             />
           );
@@ -43,14 +48,17 @@ const ArtworkCategory = ({
       {filteredArtworks.length > 0 ? (
         <ArtworkGrid
           title={
-            categories.find((c) => c.id === selectedCategory)?.name ||
-            "Categoria"
+            getFieldByLang(
+              categories.find((c) => c.id === selectedCategory),
+              "name",
+              i18n.language
+            ) || "Categoria"
           }
           artworks={filteredArtworks}
         />
       ) : (
         <ArtworkGrid
-          title="Todas as Obras"
+          title={t("AllWorks")}
           artworks={artworks.filter((art) => art.toSell)}
         />
       )}

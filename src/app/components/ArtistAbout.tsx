@@ -1,9 +1,13 @@
 "use client";
 
 import { Artist } from "@/types";
+import { getFieldByLang } from "@/utils/i18n";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 export const ArtistAbout = ({ artist }: { artist: Artist }) => {
+  const { i18n, t } = useTranslation("common");
+
   return (
     <header className="flex flex-col lg:flex-row items-center lg:items-start gap-8 p-8">
       <div className="flex-shrink-0 w-48 h-48 lg:w-1/2 lg:h-auto mt-8">
@@ -20,8 +24,10 @@ export const ArtistAbout = ({ artist }: { artist: Artist }) => {
       </div>
 
       <div className="lg:w-1/2 text-center lg:text-left p-8">
-        <h1 className="text-5xl font-extrabold mb-4">Sobre {artist.name}</h1>
-        <p className="text-xl leading-relaxed">{artist.bio}</p>
+        <h1 className="text-5xl font-extrabold mb-4">
+          {t("About")} {artist.name}
+        </h1>
+        <p className="text-xl leading-relaxed">{getFieldByLang(artist, "bio", i18n.language)}</p>
       </div>
     </header>
   );
